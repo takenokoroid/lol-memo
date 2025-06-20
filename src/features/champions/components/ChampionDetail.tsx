@@ -6,6 +6,7 @@ import { useChampion } from '../hooks/useChampion'
 import { useNotes } from '@/features/notes/hooks/useNotes'
 import { CHAMPION_ICON_URL } from '@/shared/lib/riot-api/config'
 import { ChampionNoteEditor } from './ChampionNoteEditor'
+import { MatchupSection } from './MatchupSection'
 import type { Note } from '@/features/notes/types'
 
 interface ChampionDetailProps {
@@ -149,15 +150,11 @@ export const ChampionDetail = ({ championId }: ChampionDetailProps) => {
         )}
       </div>
 
-      {/* Matchup Notes Section - To be implemented */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-          対面メモ
-        </h2>
-        <div className="text-center py-8 text-gray-500">
-          <p>対面メモ機能は近日実装予定です。</p>
-        </div>
-      </div>
+      {/* Matchup Notes Section */}
+      <MatchupSection 
+        championId={championId}
+        championName={champion.name}
+      />
     </div>
   )
 }
