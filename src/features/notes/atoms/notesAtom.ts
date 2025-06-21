@@ -1,5 +1,4 @@
 import { atom } from 'jotai'
-import type { Note } from '../types'
 
 export const selectedChampionIdAtom = atom<string | null>(null)
 export const searchQueryAtom = atom('')

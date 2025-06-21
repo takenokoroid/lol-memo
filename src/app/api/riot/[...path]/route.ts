@@ -5,7 +5,7 @@ const RIOT_API_KEY = process.env.RIOT_API_KEY
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
   if (!RIOT_API_KEY) {
     return NextResponse.json(
@@ -14,7 +14,8 @@ export async function GET(
     )
   }
 
-  const path = params.path.join('/')
+  const resolvedParams = await params
+  const path = resolvedParams.path.join('/')
   const searchParams = request.nextUrl.searchParams.toString()
   const url = `${RIOT_API_BASE_URL}/${path}${searchParams ? `?${searchParams}` : ''}`
 

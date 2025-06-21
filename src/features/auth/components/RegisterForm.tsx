@@ -40,8 +40,8 @@ export const RegisterForm = () => {
       setTimeout(() => {
         router.push('/auth/login')
       }, 3000)
-    } catch (error: any) {
-      if (error?.message?.includes('User already registered')) {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message.includes('User already registered')) {
         setError('このメールアドレスは既に登録されています。')
       } else {
         setError('登録に失敗しました。しばらくしてからもう一度お試しください。')

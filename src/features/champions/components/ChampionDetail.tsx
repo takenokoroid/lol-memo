@@ -15,7 +15,7 @@ interface ChampionDetailProps {
 
 export const ChampionDetail = ({ championId }: ChampionDetailProps) => {
   const { data: champion, error: championError, isLoading: championLoading } = useChampion(championId)
-  const { data: notes, error: notesError, isLoading: notesLoading } = useNotes(championId)
+  const { data: notes } = useNotes(championId)
   const [isEditing, setIsEditing] = useState(false)
 
   if (championLoading) {

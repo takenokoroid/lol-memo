@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { mutate } from 'swr'
@@ -14,7 +14,7 @@ const noteSchema = z.object({
   content: z.string().min(1, 'メモ内容は必須です'),
   champion_id: z.string().optional().nullable(),
   match_id: z.string().optional().nullable(),
-  tags: z.array(z.string()).default([]),
+  tags: z.array(z.string()),
 })
 
 type NoteFormData = z.infer<typeof noteSchema>
@@ -34,7 +34,6 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
   const {
     register,
     handleSubmit,
-    control,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<NoteFormData>({

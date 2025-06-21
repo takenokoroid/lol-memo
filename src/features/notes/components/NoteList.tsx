@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { mutate } from 'swr'
 import { deleteNote } from '../api'
 import { useNotes } from '../hooks/useNotes'
@@ -15,7 +14,6 @@ interface NoteListProps {
 export const NoteList = ({ championId }: NoteListProps) => {
   const { data: notes, error, isLoading } = useNotes(championId)
   const [deletingId, setDeletingId] = useState<string | null>(null)
-  const router = useRouter()
 
   const handleDelete = async (noteId: string) => {
     if (!confirm('このメモを削除しますか？')) {

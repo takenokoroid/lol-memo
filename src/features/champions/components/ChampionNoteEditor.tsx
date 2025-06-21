@@ -11,7 +11,7 @@ import type { Note, CreateNoteRequest, UpdateNoteRequest } from '@/features/note
 const championNoteSchema = z.object({
   title: z.string().min(1, 'タイトルは必須です'),
   content: z.string().min(1, 'メモ内容は必須です'),
-  tags: z.array(z.string()).default([]),
+  tags: z.array(z.string()),
 })
 
 type ChampionNoteFormData = z.infer<typeof championNoteSchema>

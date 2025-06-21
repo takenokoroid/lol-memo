@@ -1,4 +1,3 @@
-import useSWR from 'swr'
 import { useChampions } from './useChampions'
 import type { Champion } from '../types'
 
