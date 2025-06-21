@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-League of Legends APIを使用したメモアプリケーション。Next.js (App Router) + TypeScript + Tailwind CSS で構築。
+League of Legends APIを使用したメモアプリケーション。Next.js 15 (App Router) + TypeScript + Tailwind CSS v4 で構築。各チャンピオンの戦略メモと対面情報を管理。
 
 ## 技術スタック
 
-- **Framework**: Next.js 14+ (App Router)
+- **Framework**: Next.js 15.3.4 (App Router)
 - **言語**: TypeScript (strict mode)
 - **スタイリング**: Tailwind CSS v4
 - **状態管理**: Jotai (グローバル状態)
@@ -44,13 +44,19 @@ npm run test:watch
 # カバレッジレポート生成
 npm run test:coverage
 
+# 単一テストファイルの実行
+npm test -- src/features/champions/api/getChampions.test.ts
+
+# 特定のテストケースのみ実行
+npm test -- -t "チャンピオン一覧を取得"
+
 # Storybook起動
 npm run storybook
 
 # Storybookビルド
 npm run build-storybook
 
-# Chromatic実行
+# Chromatic実行（プロジェクトトークン設定が必要）
 npm run chromatic
 ```
 
@@ -79,7 +85,7 @@ src/
 ### データベーススキーマ
 - **notes**: ユーザーごとのチャンピオンメモ（タグ機能付き）
 - **champion_notes_settings**: チャンピオン別設定（ビルド、ロール等）
-- **matchup_notes**: チャンピオンvs対面チャンピオンのメモ
+- **matchup_notes**: チャンピオンvs対面チャンピオンのメモ（実装済み）
 
 すべてのテーブルでRow Level Security (RLS) を有効化し、`auth.uid()` ベースのアクセス制御を実装。
 
@@ -91,6 +97,7 @@ src/
 ### API統合
 - Riot Games APIは `/api/riot/[...path]` でプロキシ実装
 - レート制限を考慮した実装が必要
+- Data Dragon（DDragon）からのチャンピオン画像を使用
 
 ## テスト戦略
 
@@ -107,6 +114,7 @@ src/
 ### テスト設定
 - パスエイリアス: `@/` → `src/`
 - セットアップ: `jest.setup.js` でDOM、環境変数、Supabase、Next.jsのモック設定
+- カバレッジ除外: `.d.ts`、`.stories.tsx`、`index.ts` ファイル
 
 ## コード品質基準
 
@@ -146,3 +154,15 @@ RIOT_API_KEY=your-riot-api-key
 - Supabase RLSによるデータアクセス制御
 - 環境変数を通じたAPI鍵の管理
 - サーバーサイドでのみRiot API鍵を使用
+
+### パス解決
+- TypeScriptとJestの両方で `@/` エイリアスが設定済み
+- `@/` は `src/` ディレクトリを指す
+
+### Next.js設定
+- 画像最適化: DDragon CDNからの画像取得を許可（`next.config.js`）
+- React 19とApp Routerを使用
+
+### 最近の更新
+- 対面メモ機能が実装済み（コミット: 9f692d5）
+- テスト環境の整備（Jest、MSW、Storybook）

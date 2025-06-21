@@ -19,6 +19,7 @@
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.50.0",
     "jotai": "^2.12.5",
+    "lucide-react": "^0.519.0",
     "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -37,6 +38,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -51,6 +53,7 @@
     "storybook": "^9.0.12",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "undici": "^7.10.0",
     "whatwg-fetch": "^3.6.20"
   }
 }

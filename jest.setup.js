@@ -1,10 +1,6 @@
+// Import polyfills
+require('whatwg-fetch')
 import '@testing-library/jest-dom'
-import 'whatwg-fetch'
-
-// Polyfill for TextEncoder/TextDecoder
-const { TextEncoder, TextDecoder } = require('util')
-global.TextEncoder = TextEncoder
-global.TextDecoder = TextDecoder
 
 // Set up test environment variables
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test-project.supabase.co'
@@ -48,14 +44,18 @@ jest.mock('@/shared/lib/supabase/server', () => ({
   createClient: () => Promise.resolve(global.mockSupabaseClient),
 }))
 
-// Mock MSW server to avoid TextEncoder issues
-jest.mock('./src/__mocks__/server', () => ({
-  server: {
-    listen: jest.fn(),
-    resetHandlers: jest.fn(),
-    close: jest.fn(),
-  },
-}))
+// Setup MSW server after polyfills
+const { server } = require('./src/__mocks__/server')
+
+// Establish API mocking before all tests.
+beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }))
+
+// Reset any request handlers that we may add during the tests,
+// so they don't affect other tests.
+afterEach(() => server.resetHandlers())
+
+// Clean up after the tests are finished.
+afterAll(() => server.close())
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({

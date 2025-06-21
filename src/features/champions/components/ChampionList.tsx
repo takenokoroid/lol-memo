@@ -39,7 +39,7 @@ export const ChampionList = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-600"></div>
       </div>
     )
   }
@@ -53,26 +53,26 @@ export const ChampionList = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">チャンピオン一覧</h1>
+    <div className="space-y-4">
+      <div className="bg-white p-4 rounded border border-gray-200">
+        <h1 className="text-xl font-normal text-gray-800 mb-4">チャンピオン一覧</h1>
         
         {/* Search and Filter */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <div className="flex-1">
             <input
               type="text"
               placeholder="チャンピオン名で検索..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="input-scrapbox w-full"
             />
           </div>
           <div className="sm:w-48">
             <select
               value={selectedRole}
               onChange={(e) => setSelectedRole(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-300"
             >
               <option value="all">すべてのロール</option>
               {roles.map((role) => (
@@ -85,34 +85,31 @@ export const ChampionList = () => {
         </div>
 
         {/* Champions Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
           {filteredChampions.map((champion: Champion) => (
             <Link
               key={champion.id}
               href={`/champions/${champion.id}`}
-              className="group block bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors"
+              className="group block p-2 hover:bg-gray-50 rounded transition-colors"
             >
-              <div className="aspect-square relative mb-2">
+              <div className="aspect-square relative mb-1">
                 <Image
                   src={CHAMPION_ICON_URL(champion.image.full)}
                   alt={champion.name}
                   fill
-                  className="rounded-md object-cover group-hover:scale-105 transition-transform"
+                  className="rounded object-cover"
                 />
               </div>
-              <h3 className="text-sm font-medium text-gray-900 text-center truncate">
+              <h3 className="text-xs text-gray-700 text-center truncate">
                 {champion.name}
               </h3>
-              <p className="text-xs text-gray-500 text-center truncate">
-                {champion.title}
-              </p>
             </Link>
           ))}
         </div>
 
         {filteredChampions.length === 0 && (
-          <div className="text-center py-8">
-            <p className="text-gray-500">該当するチャンピオンが見つかりません。</p>
+          <div className="text-center py-6">
+            <p className="text-sm text-gray-500">該当するチャンピオンが見つかりません。</p>
           </div>
         )}
       </div>

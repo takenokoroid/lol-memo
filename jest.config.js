@@ -10,6 +10,7 @@ const createJestConfig = nextJest({
 const config = {
   coverageProvider: 'v8',
   testEnvironment: 'jsdom',
+  setupFiles: ['<rootDir>/jest.polyfills.js'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -35,6 +36,7 @@ const config = {
       statements: 70,
     },
   },
+  injectGlobals: true,
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

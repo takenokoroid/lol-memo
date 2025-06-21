@@ -3,23 +3,25 @@ import { RegisterForm } from '@/features/auth/components/RegisterForm'
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            新規アカウント作成
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            既にアカウントをお持ちの方は{' '}
-            <Link
-              href="/auth/login"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              ログイン
-            </Link>
-          </p>
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-sm w-full">
+        <div className="bg-white rounded border border-gray-200 p-6">
+          <div className="mb-6">
+            <h2 className="text-xl font-normal text-gray-800 text-center mb-2">
+              新規アカウント作成
+            </h2>
+            <p className="text-sm text-gray-600 text-center">
+              既にアカウントをお持ちの方は{' '}
+              <Link
+                href="/auth/login"
+                className="text-green-600 hover:bg-green-50 px-1 rounded"
+              >
+                ログイン
+              </Link>
+            </p>
+          </div>
+          <RegisterForm />
         </div>
-        <RegisterForm />
       </div>
     </div>
   )

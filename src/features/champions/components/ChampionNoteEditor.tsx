@@ -98,16 +98,16 @@ export const ChampionNoteEditor = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="title" className="block text-sm text-gray-600 mb-1">
           タイトル
         </label>
         <input
           {...register('title')}
           type="text"
           id="title"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="input-scrapbox"
           disabled={isSubmitting}
         />
         {errors.title && (
@@ -116,7 +116,7 @@ export const ChampionNoteEditor = ({
       </div>
 
       <div>
-        <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="content" className="block text-sm text-gray-600 mb-1">
           メモ内容
         </label>
         <textarea
@@ -130,7 +130,7 @@ export const ChampionNoteEditor = ({
 - ボーンアーマー積むと良い
 - レベル6でオールイン強い
 - 序盤はファーム重視`}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-300 resize-none"
           disabled={isSubmitting}
         />
         {errors.content && (
@@ -139,10 +139,10 @@ export const ChampionNoteEditor = ({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm text-gray-600 mb-1">
           タグ
         </label>
-        <div className="flex gap-2 mb-3">
+        <div className="flex gap-2 mb-2">
           <input
             type="text"
             value={tagInput}
@@ -154,29 +154,29 @@ export const ChampionNoteEditor = ({
               }
             }}
             placeholder="タグを追加 (例: ビルド, コンボ, 対面)"
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="flex-1 input-scrapbox"
             disabled={isSubmitting}
           />
           <button
             type="button"
             onClick={addTag}
-            className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+            className="btn-scrapbox text-sm"
             disabled={isSubmitting}
           >
             追加
           </button>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"
+              className="inline-flex items-center px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded"
             >
               {tag}
               <button
                 type="button"
                 onClick={() => removeTag(tag)}
-                className="ml-2 text-indigo-600 hover:text-indigo-800"
+                className="ml-1 text-gray-500 hover:text-red-600"
                 disabled={isSubmitting}
               >
                 ×
@@ -187,23 +187,23 @@ export const ChampionNoteEditor = ({
       </div>
 
       {error && (
-        <div className="rounded-md bg-red-50 p-4">
-          <p className="text-sm text-red-800">{error}</p>
+        <div className="p-3 bg-red-50 border border-red-200 rounded">
+          <p className="text-sm text-red-600">{error}</p>
         </div>
       )}
 
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="btn-scrapbox-primary disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? '保存中...' : (isEditing ? '更新' : '作成')}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+          className="btn-scrapbox"
           disabled={isSubmitting}
         >
           キャンセル

@@ -15,10 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className="bg-gray-50">
+      <body>
         <AuthProvider>
           <Header />
-          <main>{children}</main>
+          <main className="min-h-screen">{children}</main>
         </AuthProvider>
       </body>
     </html>

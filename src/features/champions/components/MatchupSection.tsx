@@ -51,22 +51,22 @@ export const MatchupSection = ({ championId, championName }: MatchupSectionProps
 
   if (notesLoading) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">対面メモ</h2>
+      <div className="bg-white rounded border border-gray-200 p-4">
+        <h2 className="text-lg font-normal text-gray-800 mb-3">対面メモ</h2>
         <div className="flex justify-center items-center h-32">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-600"></div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">対面メモ</h2>
+    <div className="bg-white rounded border border-gray-200 p-4">
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-lg font-normal text-gray-800">対面メモ</h2>
         <button
           onClick={() => setShowOpponentSelector(true)}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+          className="btn-scrapbox-primary text-sm"
         >
           対面を追加
         </button>
@@ -96,14 +96,9 @@ export const MatchupSection = ({ championId, championName }: MatchupSectionProps
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-500">
-              <div className="mb-4">
-                <svg className="w-12 h-12 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <p className="mb-2">まだ対面メモがありません。</p>
-              <p className="text-sm">「対面を追加」ボタンから対面チャンピオンを選択してメモを作成してください。</p>
+            <div className="text-center py-6 text-sm text-gray-500">
+              <p className="mb-1">まだ対面メモがありません。</p>
+              <p className="text-xs">「対面を追加」ボタンから対面チャンピオンを選択してメモを作成してください。</p>
             </div>
           )}
         </div>
@@ -141,32 +136,30 @@ const MatchupNoteCard = ({ note, championName, onEdit }: MatchupNoteCardProps) =
   }
 
   return (
-    <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 relative">
-              <Image
-                src={CHAMPION_ICON_URL(opponentChampion.image.full)}
-                alt={opponentChampion.name}
-                fill
-                className="rounded object-cover"
-              />
-            </div>
-            <span className="font-medium text-gray-900">
-              {championName} vs {opponentChampion.name}
-            </span>
+    <div className="border-b border-gray-200 py-3 hover:bg-gray-50 transition-colors">
+      <div className="flex items-start justify-between mb-2">
+        <div className="flex items-center space-x-2">
+          <div className="w-6 h-6 relative">
+            <Image
+              src={CHAMPION_ICON_URL(opponentChampion.image.full)}
+              alt={opponentChampion.name}
+              fill
+              className="rounded object-cover"
+            />
           </div>
+          <span className="text-sm text-gray-800">
+            {championName} vs {opponentChampion.name}
+          </span>
         </div>
         <button
           onClick={() => onEdit(opponentChampion.name)}
-          className="text-indigo-600 hover:text-indigo-800 text-sm"
+          className="text-xs text-gray-500 hover:text-green-600"
         >
           編集
         </button>
       </div>
       
-      <div className="text-gray-700 text-sm whitespace-pre-wrap mb-3">
+      <div className="text-sm text-gray-600 whitespace-pre-wrap mb-2 line-clamp-2">
         {note.content}
       </div>
       
