@@ -47,6 +47,7 @@ export const ChampionDetail = ({ championId }: ChampionDetailProps) => {
                 src={CHAMPION_ICON_URL(champion.image.full)}
                 alt={champion.name}
                 fill
+                sizes="80px"
                 className="rounded object-cover"
               />
             </div>

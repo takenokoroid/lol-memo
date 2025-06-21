@@ -97,6 +97,7 @@ export const ChampionList = () => {
                   src={CHAMPION_ICON_URL(champion.image.full)}
                   alt={champion.name}
                   fill
+                  sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 16vw, 12.5vw"
                   className="rounded object-cover"
                 />
               </div>

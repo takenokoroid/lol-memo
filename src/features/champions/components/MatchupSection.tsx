@@ -144,6 +144,7 @@ const MatchupNoteCard = ({ note, championName, onEdit }: MatchupNoteCardProps) =
               src={CHAMPION_ICON_URL(opponentChampion.image.full)}
               alt={opponentChampion.name}
               fill
+              sizes="24px"
               className="rounded object-cover"
             />
           </div>
