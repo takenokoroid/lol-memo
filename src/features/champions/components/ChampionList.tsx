@@ -11,6 +11,7 @@ export const ChampionList = () => {
   const { data: championData, error, isLoading } = useChampions()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedRole, setSelectedRole] = useState<string>('all')
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
   const champions = useMemo(() => {
     if (!championData?.data) return []
@@ -84,29 +85,101 @@ export const ChampionList = () => {
           </div>
         </div>
 
-        {/* Champions Grid */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
-          {filteredChampions.map((champion: Champion) => (
-            <Link
-              key={champion.id}
-              href={`/champions/${champion.id}`}
-              className="group block p-2 hover:bg-gray-50 rounded transition-colors"
+        {/* View Mode Toggle */}
+        <div className="flex justify-end mb-4">
+          <div className="flex bg-gray-100 rounded-md p-1">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded transition-colors ${
+                viewMode === 'grid' 
+                  ? 'bg-white shadow-sm text-green-600' 
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+              title="グリッド表示"
             >
-              <div className="aspect-square relative mb-1">
-                <Image
-                  src={CHAMPION_ICON_URL(champion.image.full)}
-                  alt={champion.name}
-                  fill
-                  sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 16vw, 12.5vw"
-                  className="rounded object-cover"
-                />
-              </div>
-              <h3 className="text-xs text-gray-700 text-center truncate">
-                {champion.name}
-              </h3>
-            </Link>
-          ))}
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-2 rounded transition-colors ${
+                viewMode === 'list' 
+                  ? 'bg-white shadow-sm text-green-600' 
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+              title="リスト表示"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
+
+        {/* Champions Display */}
+        {viewMode === 'grid' ? (
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
+            {filteredChampions.map((champion: Champion) => (
+              <Link
+                key={champion.id}
+                href={`/champions/${champion.id}`}
+                className="group block p-2 hover:bg-gray-50 rounded transition-colors"
+              >
+                <div className="aspect-square relative mb-1">
+                  <Image
+                    src={CHAMPION_ICON_URL(champion.image.full)}
+                    alt={champion.name}
+                    fill
+                    sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 16vw, 12.5vw"
+                    className="rounded object-cover"
+                  />
+                </div>
+                <h3 className="text-xs text-gray-700 text-center truncate">
+                  {champion.name}
+                </h3>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {filteredChampions.map((champion: Champion) => (
+              <Link
+                key={champion.id}
+                href={`/champions/${champion.id}`}
+                className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
+              >
+                <div className="flex-shrink-0">
+                  <Image
+                    src={CHAMPION_ICON_URL(champion.image.full)}
+                    alt={champion.name}
+                    width={48}
+                    height={48}
+                    className="rounded-md object-cover"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-medium text-gray-900 truncate">
+                    {champion.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 truncate">
+                    {champion.title}
+                  </p>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {champion.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-block px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
 
         {filteredChampions.length === 0 && (
           <div className="text-center py-6">
