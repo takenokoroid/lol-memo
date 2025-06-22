@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import type { Note, MatchupNote, CreateNoteRequest, CreateMatchupNoteRequest } from '@/features/notes/types'
+import type { Note, MatchupNote, CreateNoteRequest, CreateMatchupNoteRequest, UpdateNoteRequest } from '@/features/notes/types'
 
 export const createMockNote = (overrides: Partial<Note> = {}): Note => ({
   id: faker.string.uuid(),
@@ -45,6 +45,17 @@ export const createMockCreateMatchupNoteRequest = (overrides: Partial<CreateMatc
   champion_id: faker.string.alphanumeric(8),
   opponent_id: faker.string.alphanumeric(8),
   content: faker.lorem.paragraphs({ min: 1, max: 2 }),
+  ...overrides,
+})
+
+export const createMockUpdateNoteRequest = (overrides: Partial<UpdateNoteRequest> = {}): UpdateNoteRequest => ({
+  champion_id: faker.helpers.maybe(() => faker.string.alphanumeric(8), { probability: 0.5 }),
+  title: faker.helpers.maybe(() => faker.lorem.sentence({ min: 3, max: 8 }), { probability: 0.5 }),
+  content: faker.helpers.maybe(() => faker.lorem.paragraphs({ min: 1, max: 3 }), { probability: 0.5 }),
+  tags: faker.helpers.maybe(() => 
+    faker.helpers.arrayElements(['ビルド', 'コンボ', '対面'], { min: 1, max: 2 }), 
+    { probability: 0.5 }
+  ),
   ...overrides,
 })
 
