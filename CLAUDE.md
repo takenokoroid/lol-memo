@@ -166,3 +166,22 @@ RIOT_API_KEY=your-riot-api-key
 ### 最近の更新
 - 対面メモ機能が実装済み（コミット: 9f692d5）
 - テスト環境の整備（Jest、MSW、Storybook）
+- HMR設定の追加（コミット: ccda7f6）
+- チャンピオン表示のグリッド/リスト切り替え機能（コミット: 9e90a93）
+
+## 既知の問題と注意点
+
+### テスト環境
+- 現在、一部のテストが失敗している可能性があります（Response is not defined エラー）
+- テストカバレッジが目標の70%に達していない場合があります
+- テスト実行前に環境変数が正しく設定されているか確認してください
+
+### 開発上の注意
+- チャンピオンデータはRiot Games APIのData Dragon (DDragon) から取得
+- APIレート制限に注意（特にRiot Games API）
+- Supabaseの型定義は `npm run generate-types` で更新可能（package.jsonにスクリプトがある場合）
+
+### コンポーネント設計
+- 各featureディレクトリ内で独立性を保つ
+- 共通コンポーネントは `src/shared/components` に配置
+- feature間の依存は最小限に抑える
