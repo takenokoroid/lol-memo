@@ -1,14 +1,10 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
 import { useChampion } from '../hooks/useChampion'
-import { useNotes } from '@/features/notes/hooks/useNotes'
 import { CHAMPION_ICON_URL } from '@/shared/lib/riot-api/config'
-import { ChampionNoteEditor } from './ChampionNoteEditor'
 import { MatchupSection } from './MatchupSection'
 import { ChampionNotesSection } from './ChampionNotesSection'
-import type { Note } from '@/features/notes/types'
 
 interface ChampionDetailProps {
   championId: string
@@ -16,8 +12,6 @@ interface ChampionDetailProps {
 
 export const ChampionDetail = ({ championId }: ChampionDetailProps) => {
   const { data: champion, error: championError, isLoading: championLoading } = useChampion(championId)
-  const { data: notes } = useNotes(championId)
-  const [isEditing, setIsEditing] = useState(false)
 
   if (championLoading) {
     return (
@@ -35,7 +29,6 @@ export const ChampionDetail = ({ championId }: ChampionDetailProps) => {
     )
   }
 
-  const championNote = notes?.find((note: Note) => note.champion_id === championId)
 
   return (
     <div className="max-w-4xl mx-auto space-y-4">
@@ -88,61 +81,7 @@ export const ChampionDetail = ({ championId }: ChampionDetailProps) => {
         </div>
       </div>
 
-      {/* Champion Note */}
-      <div className="bg-white rounded border border-gray-200 p-4">
-        <div className="flex justify-between items-center mb-3">
-          <h2 className="text-lg font-normal text-gray-800">
-            {champion.name}のメモ
-          </h2>
-          <button
-            onClick={() => setIsEditing(!isEditing)}
-            className="btn-scrapbox text-sm"
-          >
-            {isEditing ? 'キャンセル' : (championNote ? '編雈' : 'メモを作成')}
-          </button>
-        </div>
-
-        {isEditing ? (
-          <ChampionNoteEditor
-            championId={championId}
-            championName={champion.name}
-            existingNote={championNote}
-            onCancel={() => setIsEditing(false)}
-            onSave={() => setIsEditing(false)}
-          />
-        ) : (
-          <div>
-            {championNote ? (
-              <div className="space-y-4">
-                <h3 className="text-base font-normal text-gray-800 mb-2">
-                  {championNote.title}
-                </h3>
-                <div className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
-                  {championNote.content}
-                </div>
-                <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
-                  {championNote.tags && championNote.tags.length > 0 && (
-                    <>
-                      {championNote.tags.map((tag) => (
-                        <span key={tag}>#{tag}</span>
-                      ))}
-                      <span className="text-gray-400">•</span>
-                    </>
-                  )}
-                  <span>最終更新: {new Date(championNote.updated_at).toLocaleDateString('ja-JP')}</span>
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-6 text-sm text-gray-500">
-                <p>まだ{champion.name}のメモがありません。</p>
-                <p>「メモを作成」ボタンをクリックして作成してください。</p>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* General Notes Section */}
+      {/* Champion Notes Section */}
       <ChampionNotesSection
         championId={championId}
         championName={champion.name}
