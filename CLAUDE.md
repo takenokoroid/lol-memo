@@ -70,16 +70,25 @@ src/
 ├── app/                    # Next.js App Router
 ├── features/              # 機能別モジュール
 │   ├── auth/             # 認証機能
+│   │   ├── components/   # 認証関連コンポーネント
+│   │   └── hooks/        # 認証関連カスタムフック
 │   ├── champions/        # チャンピオン情報管理
-│   ├── matches/          # 試合データ（将来実装）
+│   │   ├── api/          # チャンピオンAPI
+│   │   ├── components/   # チャンピオン関連コンポーネント
+│   │   ├── hooks/        # チャンピオン関連カスタムフック
+│   │   └── types/        # チャンピオン関連型定義
 │   └── notes/            # メモ機能
+│       ├── api/          # メモAPI
+│       ├── atoms/        # メモ用Jotaiアトム
+│       ├── components/   # メモ関連コンポーネント
+│       ├── hooks/        # メモ関連カスタムフック
+│       └── types/        # メモ関連型定義
 └── shared/               # 共通コンポーネント・ユーティリティ
-    ├── components/
-    ├── hooks/
+    ├── components/       # 共通UIコンポーネント
     ├── lib/              # 外部サービス連携
-    │   ├── supabase/
-    │   └── riot-api/
-    └── types/
+    │   ├── supabase/     # Supabaseクライアント
+    │   └── riot-api/     # Riot Games API連携
+    └── types/            # 共通型定義
 ```
 
 ### データベーススキーマ
