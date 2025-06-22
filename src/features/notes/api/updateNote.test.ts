@@ -1,6 +1,5 @@
 import { updateNote } from './updateNote'
 import { createMockUpdateNoteRequest } from '@/__mocks__/fixtures/noteData'
-import { userFixtures } from '@/__mocks__/fixtures/userData'
 
 // Get mock from global
 const mockSupabaseClient = global.mockSupabaseClient

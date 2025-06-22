@@ -7,9 +7,6 @@ import { userFixtures } from '@/__mocks__/fixtures/userData'
 jest.mock('@/features/auth/hooks/useAuth')
 const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>
 
-// Get mock from global
-const mockSupabaseClient = global.mockSupabaseClient
-
 describe('AuthProvider', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -251,6 +248,7 @@ describe('AuthProvider', () => {
         childRenderSpy()
         return <div data-testid="test-child">Test Child</div>
       }
+      TestChild.displayName = 'TestChild'
 
       mockUseAuth.mockReturnValue({
         user: mockUser,

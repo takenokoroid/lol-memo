@@ -5,19 +5,22 @@ League of Legendsのチャンピオン情報と戦略メモを管理するWebア
 ## 主な機能
 
 - 🏆 **チャンピオンメモ**: 各チャンピオンの戦略、ビルド、プレイスタイルを記録
-- ⚔️ **対面メモ**: チャンピオン vs チャンピオンの対面情報を管理（今後実装予定）
+- ⚔️ **対面メモ**: チャンピオン vs チャンピオンの対面情報を管理
 - 🔍 **検索・フィルタ**: チャンピオン名、ロール、タグで素早く検索
 - 🔐 **ユーザー認証**: 個人のメモを安全に管理
+- 📱 **レスポンシブ対応**: デスクトップ・タブレット・モバイルで最適表示
 
 ## 技術スタック
 
-- **Framework**: Next.js 14 (App Router)
-- **言語**: TypeScript
-- **スタイリング**: Tailwind CSS
-- **状態管理**: Jotai
-- **データ取得**: useSWR
+- **Framework**: Next.js 15.3.4 (App Router)
+- **言語**: TypeScript (strict mode)
+- **スタイリング**: Tailwind CSS v4
+- **状態管理**: Jotai (グローバル状態)
+- **データ取得**: useSWR (サーバー状態とキャッシュ管理)
 - **データベース**: Supabase (PostgreSQL)
-- **認証**: Supabase Auth
+- **認証**: Supabase Auth (SSR対応)
+- **フォーム**: React Hook Form + Zod
+- **テスト**: Jest + React Testing Library + MSW
 - **API**: Riot Games API (Data Dragon)
 
 ## セットアップ
@@ -70,7 +73,7 @@ npm run dev
 - `tags`: TEXT[] (タグ)
 - `created_at`, `updated_at`: TIMESTAMPTZ
 
-### `matchup_notes` テーブル（今後実装）
+### `matchup_notes` テーブル
 チャンピオン対面メモを保存
 
 - `id`: UUID (主キー)
@@ -78,6 +81,15 @@ npm run dev
 - `champion_id`: TEXT (メインチャンピオン)
 - `opponent_id`: TEXT (対面チャンピオン)
 - `content`: TEXT (対面メモ内容)
+- `created_at`, `updated_at`: TIMESTAMPTZ
+
+### `champion_notes_settings` テーブル
+チャンピオン別設定を保存
+
+- `id`: UUID (主キー)
+- `user_id`: UUID (ユーザーID)
+- `champion_id`: TEXT (チャンピオンID)
+- `settings`: JSON (設定情報)
 - `created_at`, `updated_at`: TIMESTAMPTZ
 
 ## プロジェクト構造
@@ -107,13 +119,63 @@ src/
 4. **タグ付け**: メモにタグを付けて整理
 5. **検索・閲覧**: 必要な時に素早くメモを検索・閲覧
 
+## デプロイメント
+
+このアプリケーションはVercelで簡単にデプロイできます。
+
+### クイックデプロイ
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/lol-memo)
+
+### 手動デプロイ
+
+詳細なデプロイ手順については [DEPLOYMENT.md](./DEPLOYMENT.md) を参照してください。
+
+#### 必要な環境変数
+
+- `NEXT_PUBLIC_SUPABASE_URL`: SupabaseプロジェクトURL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase匿名キー
+- `RIOT_API_KEY`: Riot Games API キー
+
+## テスト
+
+```bash
+# 全テスト実行
+npm test
+
+# ウォッチモード
+npm run test:watch
+
+# カバレッジレポート
+npm run test:coverage
+```
+
+## コマンド
+
+```bash
+# 開発サーバー起動
+npm run dev
+
+# 本番ビルド
+npm run build
+
+# 本番サーバー起動
+npm start
+
+# リント実行
+npm run lint
+
+# Storybook起動
+npm run storybook
+```
+
 ## 今後の実装予定
 
-- [ ] 対面メモ機能
 - [ ] メモのエクスポート機能
 - [ ] チャンピオン統計の表示
 - [ ] メモの共有機能
-- [ ] モバイルアプリ対応
+- [ ] PWA対応
+- [ ] 通知機能
 
 ## コントリビューション
 

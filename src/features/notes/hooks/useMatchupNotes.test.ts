@@ -12,7 +12,7 @@ const mockGetMatchupNote = getMatchupNote as jest.MockedFunction<typeof getMatch
 
 // SWR Provider wrapper
 const createWrapper = () => {
-  return ({ children }: { children: React.ReactNode }) => {
+  const SWRWrapper = ({ children }: { children: React.ReactNode }) => {
     return React.createElement(
       SWRConfig,
       {
@@ -24,6 +24,8 @@ const createWrapper = () => {
       children
     )
   }
+  SWRWrapper.displayName = 'SWRWrapper'
+  return SWRWrapper
 }
 
 describe('useMatchupNotes', () => {
@@ -136,7 +138,7 @@ describe('useMatchupNotes', () => {
 
       it('championIdがnullの場合はAPIを呼び出さない', () => {
         // Act
-        const { result } = renderHook(() => useMatchupNotes(null as any), {
+        const { result } = renderHook(() => useMatchupNotes(null as unknown as string), {
           wrapper: createWrapper(),
         })
 
@@ -148,7 +150,7 @@ describe('useMatchupNotes', () => {
 
       it('championIdがundefinedの場合はAPIを呼び出さない', () => {
         // Act
-        const { result } = renderHook(() => useMatchupNotes(undefined as any), {
+        const { result } = renderHook(() => useMatchupNotes(undefined as unknown as string), {
           wrapper: createWrapper(),
         })
 
@@ -325,7 +327,7 @@ describe('useMatchupNotes', () => {
 
       it('championIdがnullの場合はAPIを呼び出さない', () => {
         // Act
-        const { result } = renderHook(() => useMatchupNote(null as any, 'Renekton'), {
+        const { result } = renderHook(() => useMatchupNote(null as unknown as string, 'Renekton'), {
           wrapper: createWrapper(),
         })
 
@@ -337,7 +339,7 @@ describe('useMatchupNotes', () => {
 
       it('opponentIdがundefinedの場合はAPIを呼び出さない', () => {
         // Act
-        const { result } = renderHook(() => useMatchupNote('Aatrox', undefined as any), {
+        const { result } = renderHook(() => useMatchupNote('Aatrox', undefined as unknown as string), {
           wrapper: createWrapper(),
         })
 

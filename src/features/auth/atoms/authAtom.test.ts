@@ -46,10 +46,11 @@ describe('authAtom', () => {
     it('異なるユーザー情報に更新できる', () => {
       // Arrange
       const mockUser1 = userFixtures.authenticatedUser()
-      const mockUser2 = userFixtures.authenticatedUser({
+      const mockUser2 = {
+        ...userFixtures.authenticatedUser(),
         id: 'different-user-id',
         email: 'different@example.com',
-      })
+      }
 
       // Act
       store.set(userAtom, mockUser1)
@@ -193,10 +194,11 @@ describe('authAtom', () => {
       const store1 = createStore()
       const store2 = createStore()
       const mockUser1 = userFixtures.authenticatedUser()
-      const mockUser2 = userFixtures.authenticatedUser({
+      const mockUser2 = {
+        ...userFixtures.authenticatedUser(),
         id: 'user-2',
         email: 'user2@example.com',
-      })
+      }
 
       // Act
       store1.set(userAtom, mockUser1)
@@ -248,7 +250,7 @@ describe('authAtom', () => {
       store.set(userAtom, mockUser)
 
       // Act
-      store.set(userAtom, undefined as any)
+      store.set(userAtom, undefined as unknown as null)
       const user = store.get(userAtom)
       const isAuthenticated = store.get(isAuthenticatedAtom)
 
@@ -259,7 +261,7 @@ describe('authAtom', () => {
 
     it('空オブジェクトをuserAtomに設定した場合の動作', () => {
       // Act
-      store.set(userAtom, {} as any)
+      store.set(userAtom, {} as unknown as null)
       const user = store.get(userAtom)
       const isAuthenticated = store.get(isAuthenticatedAtom)
 

@@ -9,9 +9,11 @@ const mockSupabaseClient = global.mockSupabaseClient
 
 // Jotai Provider wrapper
 const createWrapper = () => {
-  return ({ children }: { children: React.ReactNode }) => {
+  const ProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     return React.createElement(Provider, null, children)
   }
+  ProviderWrapper.displayName = 'ProviderWrapper'
+  return ProviderWrapper
 }
 
 describe('useAuth', () => {
@@ -117,7 +119,7 @@ describe('useAuth', () => {
     it('ログイン時にユーザー情報が更新される', async () => {
       // Arrange
       const mockUser = userFixtures.authenticatedUser()
-      let authStateChangeCallback: (event: any, session: any) => void
+      let authStateChangeCallback: (event: string, session: unknown) => void
 
       mockSupabaseClient.auth.getUser.mockResolvedValue({
         data: { user: null },
@@ -156,7 +158,7 @@ describe('useAuth', () => {
     it('ログアウト時にユーザー情報がnullになる', async () => {
       // Arrange
       const mockUser = userFixtures.authenticatedUser()
-      let authStateChangeCallback: (event: any, session: any) => void
+      let authStateChangeCallback: (event: string, session: unknown) => void
 
       mockSupabaseClient.auth.getUser.mockResolvedValue({
         data: { user: mockUser },

@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react'
 import { SWRConfig } from 'swr'
 import { useChampion } from './useChampion'
 import { useChampions } from './useChampions'
@@ -11,7 +11,7 @@ const mockUseChampions = useChampions as jest.MockedFunction<typeof useChampions
 
 // SWR Provider wrapper
 const createWrapper = () => {
-  return ({ children }: { children: React.ReactNode }) => {
+  const SWRWrapper = ({ children }: { children: React.ReactNode }) => {
     return React.createElement(
       SWRConfig,
       {
@@ -23,6 +23,8 @@ const createWrapper = () => {
       children
     )
   }
+  SWRWrapper.displayName = 'SWRWrapper'
+  return SWRWrapper
 }
 
 // Mock champion data
@@ -241,7 +243,7 @@ describe('useChampion', () => {
         type: 'champion',
         format: 'standAloneComplex',
         version: '14.1.1',
-        data: undefined as any,
+        data: undefined as unknown as Record<string, Champion>,
       }
       
       mockUseChampions.mockReturnValue({
@@ -338,12 +340,12 @@ describe('useChampion', () => {
       },
       {
         description: 'nullのchampionId',
-        championId: null as any,
+        championId: null as unknown as string,
         expectedData: null,
       },
       {
         description: 'undefinedのchampionId',
-        championId: undefined as any,
+        championId: undefined as unknown as string,
         expectedData: null,
       },
       {
@@ -385,7 +387,6 @@ describe('useChampion', () => {
   describe('型安全性', () => {
     it('返されるチャンピオンデータが正しい型を持つ', () => {
       // Arrange
-      const championId = 'Aatrox'
       const mockChampion = createMockChampion({
         id: 'TypeTestChamp',
         key: '999',

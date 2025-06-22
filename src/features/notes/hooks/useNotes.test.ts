@@ -9,7 +9,7 @@ const mockSupabaseClient = global.mockSupabaseClient
 
 // SWR Provider wrapper
 const createWrapper = () => {
-  return ({ children }: { children: React.ReactNode }) => {
+  const SWRWrapper = ({ children }: { children: React.ReactNode }) => {
     return React.createElement(
       SWRConfig,
       {
@@ -21,6 +21,8 @@ const createWrapper = () => {
       children
     )
   }
+  SWRWrapper.displayName = 'SWRWrapper'
+  return SWRWrapper
 }
 
 describe('useNotes', () => {
@@ -364,7 +366,7 @@ describe('useNotes', () => {
       mockSupabaseClient.from.mockReturnValue(mockChain)
 
       // Act
-      const { result } = renderHook(() => useNotes(null as any), {
+      const { result } = renderHook(() => useNotes(null as unknown as string | undefined), {
         wrapper: createWrapper(),
       })
 

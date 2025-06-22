@@ -11,7 +11,7 @@ const mockGetChampions = getChampions as jest.MockedFunction<typeof getChampions
 
 // SWR Provider wrapper
 const createWrapper = () => {
-  return ({ children }: { children: React.ReactNode }) => {
+  const SWRWrapper = ({ children }: { children: React.ReactNode }) => {
     return React.createElement(
       SWRConfig,
       {
@@ -23,6 +23,8 @@ const createWrapper = () => {
       children
     )
   }
+  SWRWrapper.displayName = 'SWRWrapper'
+  return SWRWrapper
 }
 
 // Mock champion data
