@@ -7,12 +7,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { mutate } from 'swr'
 import { createNote, updateNote } from '../api'
+import { ChampionSelect } from './ChampionSelect'
 import type { Note, CreateNoteRequest, UpdateNoteRequest } from '../types'
 
 const noteSchema = z.object({
   title: z.string().min(1, 'タイトルは必須です'),
   content: z.string().min(1, 'メモ内容は必須です'),
-  champion_id: z.string().optional().nullable(),
+  champion_id: z.string().min(1, 'チャンピオンを選択してください'),
   match_id: z.string().optional().nullable(),
   tags: z.array(z.string()),
 })
@@ -29,6 +30,7 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
   const [tags, setTags] = useState<string[]>(note?.tags || [])
   const [tagInput, setTagInput] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [selectedChampionId, setSelectedChampionId] = useState(note?.champion_id || championId || '')
   const isEditing = !!note
 
   const {
@@ -41,7 +43,7 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
     defaultValues: {
       title: note?.title || '',
       content: note?.content || '',
-      champion_id: note?.champion_id || championId || null,
+      champion_id: note?.champion_id || championId || '',
       tags: note?.tags || [],
     },
   })
@@ -49,6 +51,10 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
   useEffect(() => {
     setValue('tags', tags)
   }, [tags, setValue])
+
+  useEffect(() => {
+    setValue('champion_id', selectedChampionId)
+  }, [selectedChampionId, setValue])
 
   const addTag = () => {
     if (tagInput.trim() && !tags.includes(tagInput.trim())) {
@@ -93,8 +99,8 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">
+    <div className="max-w-4xl mx-auto">
+      <h1 className="text-2xl font-normal text-gray-800 mb-6">
         {isEditing ? 'メモを編集' : '新しいメモを作成'}
       </h1>
       
@@ -107,7 +113,7 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
             {...register('title')}
             type="text"
             id="title"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
             disabled={isSubmitting}
           />
           {errors.title && (
@@ -123,7 +129,7 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
             {...register('content')}
             id="content"
             rows={10}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
             disabled={isSubmitting}
           />
           {errors.content && (
@@ -132,15 +138,11 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
         </div>
 
         <div>
-          <label htmlFor="champion_id" className="block text-sm font-medium text-gray-700">
-            チャンピオンID（オプション）
-          </label>
-          <input
-            {...register('champion_id')}
-            type="text"
-            id="champion_id"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            disabled={isSubmitting}
+          <ChampionSelect
+            selectedChampionId={selectedChampionId}
+            onSelect={(championId) => setSelectedChampionId(championId)}
+            required={true}
+            error={errors.champion_id?.message}
           />
         </div>
 
@@ -159,14 +161,14 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
                   addTag()
                 }
               }}
-              className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
               placeholder="タグを追加..."
               disabled={isSubmitting}
             />
             <button
               type="button"
               onClick={addTag}
-              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+              className="btn-scrapbox-secondary"
               disabled={isSubmitting}
             >
               追加
@@ -176,13 +178,13 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
+                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
               >
                 {tag}
                 <button
                   type="button"
                   onClick={() => removeTag(tag)}
-                  className="ml-1 text-indigo-600 hover:text-indigo-800"
+                  className="ml-1 text-green-600 hover:text-green-800"
                   disabled={isSubmitting}
                 >
                   ×
@@ -202,14 +204,14 @@ export const NoteEditor = ({ note, championId }: NoteEditorProps) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-scrapbox-primary disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? '保存中...' : (isEditing ? '更新' : '作成')}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+            className="btn-scrapbox-secondary"
             disabled={isSubmitting}
           >
             キャンセル

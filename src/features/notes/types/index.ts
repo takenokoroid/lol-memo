@@ -1,7 +1,7 @@
 export interface Note {
   id: string
   user_id: string
-  champion_id: string | null
+  champion_id: string
   title: string
   content: string
   tags: string[] | null
@@ -10,14 +10,14 @@ export interface Note {
 }
 
 export interface CreateNoteRequest {
-  champion_id?: string | null
+  champion_id: string
   title: string
   content: string
   tags?: string[]
 }
 
 export interface UpdateNoteRequest {
-  champion_id?: string | null
+  champion_id?: string
   title?: string
   content?: string
   tags?: string[]

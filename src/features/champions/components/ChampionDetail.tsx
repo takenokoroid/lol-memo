@@ -7,6 +7,7 @@ import { useNotes } from '@/features/notes/hooks/useNotes'
 import { CHAMPION_ICON_URL } from '@/shared/lib/riot-api/config'
 import { ChampionNoteEditor } from './ChampionNoteEditor'
 import { MatchupSection } from './MatchupSection'
+import { ChampionNotesSection } from './ChampionNotesSection'
 import type { Note } from '@/features/notes/types'
 
 interface ChampionDetailProps {
@@ -140,6 +141,12 @@ export const ChampionDetail = ({ championId }: ChampionDetailProps) => {
           </div>
         )}
       </div>
+
+      {/* General Notes Section */}
+      <ChampionNotesSection
+        championId={championId}
+        championName={champion.name}
+      />
 
       {/* Matchup Notes Section */}
       <MatchupSection 
