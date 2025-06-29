@@ -94,7 +94,7 @@ src/
 ### データベーススキーマ
 - **notes**: ユーザーごとのチャンピオンメモ（タグ機能付き）
 - **champion_notes_settings**: チャンピオン別設定（ビルド、ロール等）
-- **matchup_notes**: チャンピオンvs対面チャンピオンのメモ（実装済み）
+- **matchup_notes**: チャンピオンvs対面チャンピオンのメモ
 
 すべてのテーブルでRow Level Security (RLS) を有効化し、`auth.uid()` ベースのアクセス制御を実装。
 
@@ -151,6 +151,10 @@ src/
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 RIOT_API_KEY=your-riot-api-key
+
+# アプリアクセス制限（Vercelの環境変数に設定）
+APP_PASSWORD=your-secure-app-password
+JWT_SECRET=your-jwt-secret-key
 ```
 
 ## 開発時の重要ポイント
@@ -177,20 +181,21 @@ RIOT_API_KEY=your-riot-api-key
 - テスト環境の整備（Jest、MSW、Storybook）
 - HMR設定の追加（コミット: ccda7f6）
 - チャンピオン表示のグリッド/リスト切り替え機能（コミット: 9e90a93）
+- アプリアクセス制限機能を追加（パスワード認証）
 
-## 既知の問題と注意点
+## アクセス制限機能
 
-### テスト環境
-- 現在、一部のテストが失敗している可能性があります（Response is not defined エラー）
-- テストカバレッジが目標の70%に達していない場合があります
-- テスト実行前に環境変数が正しく設定されているか確認してください
+### 概要
+Vercel無料プランでのデプロイ時にアプリ全体へのアクセスを制限する機能。環境変数で設定したパスワードによる認証を実装。
 
-### 開発上の注意
-- チャンピオンデータはRiot Games APIのData Dragon (DDragon) から取得
-- APIレート制限に注意（特にRiot Games API）
-- Supabaseの型定義は `npm run generate-types` で更新可能（package.jsonにスクリプトがある場合）
+### 実装詳細
+- **認証方式**: JWTトークンベース（HttpOnly Cookie）
+- **パスワード保護**: 環境変数 `APP_PASSWORD` で管理
+- **レート制限**: 15分間に5回までの試行制限
+- **認証フロー**: アプリ認証 → Supabase認証の2段階
 
-### コンポーネント設計
-- 各featureディレクトリ内で独立性を保つ
-- 共通コンポーネントは `src/shared/components` に配置
-- feature間の依存は最小限に抑える
+### 設定方法
+1. Vercelの環境変数に以下を設定:
+   - `APP_PASSWORD`: アプリアクセス用パスワード
+   - `JWT_SECRET`: JWT署名用のシークレットキー（ランダムな文字列）
+2. デプロイ後、アプリにアクセスするとパスワード入力画面が表示される

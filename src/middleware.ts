@@ -1,8 +1,20 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
+import { isAppAuthenticatedFromRequest } from '@/lib/auth/app-auth'
 
 export async function middleware(request: NextRequest) {
+  // アプリ認証のチェック（/auth/app-login以外のすべてのルートで必要）
+  if (!request.nextUrl.pathname.startsWith('/auth/app-login') && 
+      !request.nextUrl.pathname.startsWith('/api/auth/app-verify')) {
+    const isAppAuth = await isAppAuthenticatedFromRequest(request)
+    if (!isAppAuth) {
+      const loginUrl = new URL('/auth/app-login', request.url)
+      loginUrl.searchParams.set('from', request.nextUrl.pathname)
+      return NextResponse.redirect(loginUrl)
+    }
+  }
+
   let response = NextResponse.next({
     request: {
       headers: request.headers,
