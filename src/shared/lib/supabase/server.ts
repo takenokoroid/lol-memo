@@ -1,13 +1,22 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import type { Database } from '@/shared/types/database'
+import { getSupabaseConfig } from './config'
 
 export const createClient = async () => {
   const cookieStore = await cookies()
+  const config = getSupabaseConfig()
+
+  // サーバーサイドで設定が無い場合、警告を出してダミークライアントを返す
+  if (!config.isConfigured) {
+    console.warn(
+      'Supabase環境変数が設定されていません。ビルド時はダミークライアントを使用します。'
+    )
+  }
 
   return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    config.url,
+    config.anonKey,
     {
       cookies: {
         getAll() {

@@ -11,6 +11,13 @@ export const useAuth = () => {
   useEffect(() => {
     const checkUser = async () => {
       try {
+        // Supabaseが設定されていない場合はスキップ
+        const config = await import('@/shared/lib/supabase/config').then(m => m.getSupabaseConfig())
+        if (!config.isConfigured) {
+          setIsLoading(false)
+          return
+        }
+
         const { data: { user } } = await supabase.auth.getUser()
         setUser(user)
       } catch (error) {
@@ -22,11 +29,25 @@ export const useAuth = () => {
 
     checkUser()
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-    })
+    // Supabaseが設定されている場合のみ認証状態の監視を設定
+    let subscription: any
+    const setupAuthListener = async () => {
+      const config = await import('@/shared/lib/supabase/config').then(m => m.getSupabaseConfig())
+      if (config.isConfigured) {
+        const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+          setUser(session?.user ?? null)
+        })
+        subscription = data.subscription
+      }
+    }
+    
+    setupAuthListener()
 
-    return () => subscription.unsubscribe()
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe()
+      }
+    }
   }, [supabase, setUser, setIsLoading])
 
   const signIn = async (email: string, password: string) => {

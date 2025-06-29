@@ -66,6 +66,7 @@ RIOT_API_KEY=RGAPI-xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
 #### 1. 環境変数が認識されない
 - 環境変数名が正確に設定されているか確認
 - 再デプロイを実行（`Deployments` > `...` > `Redeploy`）
+- ビルド時に環境変数が必要な場合は、Vercelの環境変数設定後に再デプロイが必要
 
 #### 2. Supabase接続エラー
 - Supabase URLとAnon Keyが正しいか確認
@@ -81,6 +82,10 @@ RIOT_API_KEY=RGAPI-xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
 - `npm run build` をローカルで実行して事前確認
 - TypeScriptエラーを解決
 - ESLintエラーを解決
+- 環境変数が設定されていない場合のビルドエラー対策：
+  - `.env.example`ファイルを参考に必要な環境変数を確認
+  - Vercelの環境変数設定を確認
+  - ビルド時チェックスクリプト（`scripts/check-env.js`）のログを確認
 
 ### ログの確認
 

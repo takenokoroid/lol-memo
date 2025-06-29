@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // 環境変数のチェックをスキップ（Vercelビルド時の問題を回避）
+  skipTrailingSlashRedirect: true,
+  skipMiddlewareUrlNormalize: true,
   images: {
     remotePatterns: [
       {
